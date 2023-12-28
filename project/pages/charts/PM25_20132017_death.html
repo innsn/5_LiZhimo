@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>大气污染可视分析</title>
+    <!-- plugins:css -->
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/echarts.min.js"></script>
+</head>
+
+<body>
+
+
+<div class="card-body">
+    <h4 class="card-title"></h4>
+    <div id="Death" style="width: 600px;height:370px;"></div>
+</div>
+
+<script>
+    let myChart = echarts.init(document.getElementById('Death'));
+    option = {
+        legend: {},
+        grid: {
+            left: '5%',
+            right: '5%',
+            bottom: '3%',
+            containLabel: true
+        },
+        tooltip: {
+            trigger: 'axis',
+            formatter: function (params) {
+                var result = '';
+                result += params[0].name + '<br />';
+                for (var i = 0; i < params.length; i++) {
+                    if(i<=1)
+                    {
+                        result += params[i].seriesName + ': ' + params[i].value + "万人" + '<br />';
+                    }
+                    else
+                    {
+                        result += params[i].seriesName + ': ' + params[i].value + "/十万人" + '<br />';
+                    }
+                }
+                return result;
+            },
+            position: function (point, params, dom, rect, size) {
+                //  size为当前窗口大小
+                if ((size.viewSize[0] / 2) >= point[0]) {
+                    //其中point为当前鼠标的位置
+                    return [point[0] + 50, '10%'];
+                } else {
+                    //其中point为当前鼠标的位置
+                    return [point[0] - 200, '10%'];
+                }
+            },
+        },
+        xAxis: [
+            {
+                type: 'category',
+                data: ['河南', '山东', '河北', '广东', '湖北', '湖南', '江苏', '安徽', '山西', '江西', '浙江', '北京', '福建', '天津', '上海', '海南'],
+                axisLabel: {
+                    rotate: '45'
+                },
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value',
+                name: '死亡人数/万人',
+                nameRotate: '90',
+                nameGap: '30',
+                nameLocation: 'center',
+                min: 0,
+                max: 20,
+                interval: 2,
+            },
+            {
+                type: 'value',
+                name: '死亡率（1/10万）',
+                nameRotate: '270',
+                nameGap: '30',
+                nameLocation: 'center',
+                min: 0,
+                max: 200,
+                interval: 20,
+            }
+        ],
+        series: [
+            {
+                name: '2013死亡人数',
+                type: 'bar',
+                emphasis: {
+                    focus: 'series'
+                },
+                yAxisIndex: 0,
+                data: [11.17, 10.83, 10.14, 5.97, 5.46, 5.30, 5.28, 5.21, 3.38, 2.96, 2.22, 1.89, 1.63, 1.30, 0.93, 0.26],
+                itemStyle: {
+                    color: '#fab1a0'
+                }
+            },
+            {
+                name: '2017死亡人数',
+                type: 'bar',
+                emphasis: {
+                    focus: 'series'
+                },
+                yAxisIndex: 0,
+                data: [10.84, 11.22, 10.16, 6.03, 5.57, 5.15, 5.21, 4.99, 2.98, 3.35, 2.14, 2.01, 1.81, 1.32, 0.99, 0.31],
+                itemStyle: {
+                    color: '#74b9ff' // 更改第一个系列的颜色为天蓝色
+                }
+            },
+            {
+                name: '2013死亡率',
+                type: 'line',
+                smooth: true,
+                yAxisIndex: 1,
+                data: [179.52, 163.79, 192.71, 94.2, 145.47, 125.48, 99.87, 132.46, 132.74, 91.14, 63.47, 119.54, 70.67, 120.13, 62.28, 49.60],
+                itemStyle: {
+                    color: '#fab1a0'
+                }
+            },
+            {
+                name: '2017死亡率',
+                type: 'line',
+                smooth: true,
+                yAxisIndex: 1,
+                data: [162.75, 158.57, 180.43, 88.98, 138.70, 114, 92.02, 118.58, 109.53, 96.65, 57.26, 118.45, 73.42, 113.48, 62.18, 58.04],
+                 itemStyle: {
+                    color: '#74b9ff' // 更改第一个系列的颜色为天蓝色
+                }
+            }
+        ]
+    };
+    myChart.setOption(option);// 重新加载图表
+
+
+</script>
+</body>
+</html>

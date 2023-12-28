@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>大气污染可视分析</title>
+    <!-- plugins:css -->
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/echarts.min.js"></script>
+</head>
+
+<body>
+
+
+<div class="card-body">
+    <h4 class="card-title"></h4>
+    <div id="Death" style="width: 600px;height:370px;"></div>
+</div>
+
+<script>
+    let myChart = echarts.init(document.getElementById('Death'));
+    option = {
+        tooltip: {
+            trigger: 'axis',
+            formatter: function (params) {
+                let result = '';
+                result += params[0].name + '<br />';
+                for (let i = 0; i < params.length; i++) {
+                    if (i <= 1) {
+                        result += params[i].seriesName + ': ' + -params[i].value  + '<br />';
+                    } else {
+                        result += params[i].seriesName + ': ' + params[i].value  + '<br />';
+                    }
+                }
+                return result;
+            },
+            position: function (point, params, dom, rect, size) {
+                //  size为当前窗口大小
+                if ((size.viewSize[0] / 2) >= point[0]) {
+                    //其中point为当前鼠标的位置
+                    return [point[0] + 50, '10%'];
+                } else {
+                    //其中point为当前鼠标的位置
+                    return [point[0] - 200, '10%'];
+                }
+            },
+        },
+        legend: {
+            data: ['人口', '老龄化', '死亡率', 'PM2.5浓度','净变化']
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        yAxis: [
+            {
+                type: 'value'
+            }
+        ],
+        xAxis: [
+            {
+                type: 'category',
+                axisTick: {
+                    show: false
+                },
+                axisLabel: {
+                    rotate: '45'
+                },
+                data: ['安徽', '北京', '福建', '广东', '河北', '河南', '湖北', '湖南', '江苏', '江西', '山东', '上海', '山西', '天津', '浙江', '海南']
+            }
+        ],
+        series: [
+            {
+                name: '人口',
+                type: 'bar',
+                stack: 'Total',
+                emphasis: {
+                    focus: 'series'
+                },
+                data: [-1256, -155, -360, -1476, -2510, -2854, -1484, -1477, -1481, -802, -3102, -32, -899, -102, -437],
+                itemStyle: {
+                    color: '#1982c4' // 更改第二个系列的颜色为橙色
+                }
+            },
+            {
+                name: '老龄化',
+                type: 'bar',
+                stack: 'Total',
+                emphasis: {
+                    focus: 'series'
+                },
+                data: [-6359, -2578, -1737, -8289, -12745, -15039, -6453, -6245, -6235, -4113, -13988, -1505, -4274, -1823, -2578],
+
+                 itemStyle: {
+                    color: '#fab1a0' // 更改第二个系列的颜色为橙色
+                }
+            },
+            {
+                name: '死亡率',
+                type: 'bar',
+                stack: 'Total',
+                emphasis: {
+                    focus: 'series'
+                },
+                data: [1289, 12, 27, 17, 1557, 2567, 1046, 978, 867, 289, 1157, 29, 348, 34, 229],
+                itemStyle: {
+                    color: '#ffca3a' // 更改第二个系列的颜色为橙色
+                }
+            },
+            {
+                name: 'PM2.5浓度',
+                type: 'bar',
+                stack: 'Total',
+                emphasis: {
+                    focus: 'series'
+                },
+                data: [8974, 2567, 1039, 9127, 14698, 18357, 6489, 9320, 8937, 983, 13056, 854, 9648, 2553, 4859],
+                itemStyle: {
+                    color: '#74c69d' // 更改第二个系列的颜色为橙色
+                }
+            },
+            {
+                name: '净变化',
+                type: 'line',
+
+                emphasis: {
+                    focus: 'series'
+                },
+                data: [2648,-154,-1031,-621,1000,3031,-402,2576,2088,-3643,-2877,-654,4823,662,2073],
+                itemStyle: {
+                    color: 'pink' // 更改第二个系列的颜色为橙色
+                }
+            }
+        ]
+    };
+
+
+    myChart.setOption(option);// 重新加载图表
+
+
+</script>
+</body>
+</html>

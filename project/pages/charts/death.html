@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>大气污染可视分析</title>
+    <!-- plugins:css -->
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/echarts.min.js"></script>
+</head>
+
+<body>
+
+
+<div class="card-body">
+    <h4 class="card-title"></h4>
+    <div id="Death" style="width: 600px;height:400px;"></div>
+</div>
+
+<script>
+    let myChart = echarts.init(document.getElementById('Death'));
+    option = {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow',
+            },
+            formatter: function (params) {
+                let result = '';
+                result += params[0].name + '<br />';
+                for (let i = 0; i < params.length; i++) {
+                    let temp = 0;
+                    for (let j = 0; j <= i; j++) {
+                        temp += params[j].value;
+                        temp = Math.floor(temp * 100) / 100;
+                    }
+                    result += params[i].seriesName + ': ' + temp + '%' + '<br />';
+                }
+                return result;
+            },
+
+        },
+        legend: {},
+        grid: {
+            left: '10%',
+            right: '4%',
+            bottom: '10%',
+            containLabel: false
+        },
+        yAxis:  [
+            {
+                type: 'category',
+                data: ['2013', '2015', '2017']
+            }
+        ],
+        xAxis:[
+            {
+                type: 'value'
+            }
+        ],
+        series: [
+            {
+                name: '归因于PM2.5死亡数',
+                type: 'bar',
+                stack: 'Ad',
+                emphasis: {
+                    focus: 'series'
+                },
+                data: [7.9, 7.92, 7.09],
+                itemStyle: {
+                    color: '#74b9ff' // 更改第一个系列的颜色为天蓝色
+                }
+            },
+            {
+                name: '特定疾病死亡数',
+                type: 'bar',
+                stack: 'Ad',
+                emphasis: {
+                    focus: 'series'
+                },
+                data: [44.35, 44.59, 45.7],
+                itemStyle: {
+                    color: '#ffeaa7' // 更改第二个系列的颜色为橙色
+                }
+            },
+            {
+                name: '总死亡数',
+                type: 'bar',
+                stack: 'Ad',
+                emphasis: {
+                    focus: 'series'
+                },
+                data: [47.75, 47.49, 47.21],
+                itemStyle: {
+                    color: '#fab1a0' // 更改第三个系列的颜色为绿色
+                }
+            },
+        ]
+    };
+    myChart.setOption(option);
+
+
+</script>
+</body>
+</html>

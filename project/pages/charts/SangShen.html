@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>桑葚图</title>
+    <!-- 加载 D3.js -->
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/echarts.min.js"></script>
+
+    <style>
+        /* 可以添加自定义的 CSS 样式 */
+        #parallel-coordinates-chart {
+            width: 100%;
+            height: 400px; /* 根据需要调整高度 */
+        }
+    </style>
+</head>
+<body>
+
+<div id="sangji" style="width: 880px;height:680px;"></div>
+<script>
+var chartDom = document.getElementById('sangji');
+var myChart = echarts.init(chartDom);
+var option;
+
+myChart.showLoading();
+$.get('../../data/merged_output.json', function (data) {
+  myChart.hideLoading();
+  myChart.setOption(
+    (option = {
+      title: {
+        text: 'Sankey Diagram'
+      },
+      tooltip: {
+        trigger: 'item',
+        triggerOn: 'mousemove'
+      },
+      series: [
+        {
+          type: 'sankey',
+          data: data.nodes,
+          links: data.links,
+          emphasis: {
+            focus: 'adjacency'
+          },
+          levels: [
+            {
+              depth: 0,
+              itemStyle: {
+                color: '#fbb4ae'
+              },
+              lineStyle: {
+                color: 'source',
+                opacity: 0.6
+              }
+            },
+            {
+              depth: 1,
+              itemStyle: {
+                color: '#b3cde3'
+              },
+              lineStyle: {
+                color: 'source',
+                opacity: 0.6
+              }
+            },
+            {
+              depth: 2,
+              itemStyle: {
+                color: '#ccebc5'
+              },
+              lineStyle: {
+                color: 'source',
+                opacity: 0.6
+              }
+            },
+            {
+              depth: 3,
+              itemStyle: {
+                color: '#decbe4'
+              },
+              lineStyle: {
+                color: 'source',
+                opacity: 0.6
+              }
+            }
+          ],
+          lineStyle: {
+            curveness: 0.5
+          }
+        }
+      ]
+    })
+  );
+});
+
+option && myChart.setOption(option);
+
+</script>
+
+</body>
+</html>

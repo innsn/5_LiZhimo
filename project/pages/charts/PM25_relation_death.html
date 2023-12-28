@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>大气污染可视分析</title>
+    <!-- plugins:css -->
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/echarts.min.js"></script>
+</head>
+
+<body>
+
+
+<div class="card-body">
+    <h4 class="card-title"></h4>
+    <div id="Death" style="width: 600px;height:370px;"></div>
+</div>
+
+<script>
+    let myChart = echarts.init(document.getElementById('Death'));
+    option = {
+        legend: {},
+        grid: {
+            left: '5%',
+            right: '5%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: [
+            {
+                type: 'category',
+                data: ['2013', '2015', '2017']
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value',
+                name: 'PM2.5相关死亡人数/万人',
+                nameRotate: '90',
+                nameGap: '30',
+                nameLocation: 'center',
+                min: 0,
+                max: 120,
+                interval: 10,
+            },
+            {
+                type: 'value',
+                name: 'PM2.5平均浓度/微克每立方米',
+                nameRotate: '270',
+                nameGap: '30',
+                nameLocation: 'center',
+                min: 0,
+                max: 60,
+                interval: 5,
+            }
+        ],
+        series: [
+            {
+                name: 'COPD',
+                type: 'bar',
+                stack: 'Ad',
+                emphasis: {
+                    focus: 'series'
+                },
+                label: {
+                    show: true, //开启显示
+                    position: 'inside', //在上方显示
+                    formatter: '{c}',//显示百分号
+                    textStyle: { //数值样式
+                        color: 'black',//字体颜色
+                        fontSize: 10//字体大小
+                    }
+                },
+                data: [6.37, 6.38, 5.32],
+                itemStyle: {
+                    color: '#7BDFF2' // 更改第二个系列的颜色为橙色
+                }
+            },
+            {
+                name: 'IHD',
+                type: 'bar',
+                stack: 'Ad',
+                emphasis: {
+                    focus: 'series'
+                },
+                label: {
+                    show: true, //开启显示
+                    position: 'inside', //在上方显示
+                    formatter: '{c}',//显示百分号
+                    textStyle: { //数值样式
+                        color: 'black',//字体颜色
+                        fontSize: 10//字体大小
+                    }
+                },
+                data: [19.96, 22.71, 23.22],
+                itemStyle: {
+                    color: '#B2F7EF' // 更改第二个系列的颜色为橙色
+                }
+            },
+            {
+                name: 'LC',
+                type: 'bar',
+                stack: 'Ad',
+                emphasis: {
+                    focus: 'series'
+                },
+                label: {
+                    show: true, //开启显示
+                    position: 'inside', //在上方显示
+                    formatter: '{c}',//显示百分号
+                    textStyle: { //数值样式
+                        color: 'black',//字体颜色
+                        fontSize: 10//字体大小
+                    }
+                },
+                data: [7.29, 7.97, 7.27],
+                itemStyle: {
+                    color: '#D7DCE9' // 更改第二个系列的颜色为橙色
+                }
+            },
+            {
+                name: 'STK',
+                type: 'bar',
+                stack: 'Ad',
+                emphasis: {
+                    focus: 'series'
+                },
+                label: {
+                    show: true, //开启显示
+                    position: 'inside', //在上方显示
+                    formatter: '{c}',//显示百分号
+                    textStyle: { //数值样式
+                        color: 'black',//字体颜色
+                        fontSize: 10//字体大小
+                    }
+                },
+                data: [40.3, 40.7, 38.28],
+                itemStyle: {
+                    color: '#F7D6E0' // 更改第二个系列的颜色为橙色
+                }
+            },
+            {
+                name: 'PM2.5平均浓度',
+                type: 'line',
+                yAxisIndex: 1,
+                data: [54.78, 45.14, 38.92]
+            }
+        ]
+    };
+    myChart.setOption(option);// 重新加载图表
+
+
+</script>
+</body>
+</html>

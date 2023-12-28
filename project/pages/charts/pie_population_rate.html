@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>大气污染可视分析</title>
+    <!-- plugins:css -->
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/echarts.min.js"></script>
+</head>
+
+<body>
+
+
+<div class="card-body">
+    <h4 class="card-title"></h4>
+    <div id="Death" style="width:450px;height:360px;"></div>
+</div>
+
+<script>
+    let dataall = [
+        {value: 2347.47, name: '北京市'},
+        {value: 1471.39, name: '天津市'},
+        {value: 1149.28, name: '保定市'},
+        {value: 1059.23, name: '石家庄市'},
+        {value: 732.11, name: '沧州市'},
+        {value: 778.40, name: '唐山市'},
+        {value: 949.23, name: '邯郸市'},
+        {value: 454.18, name: '廊坊市'},
+        {value: 730.57, name: '邢台市'},
+        {value: 443.43, name: '衡水市'},
+        {value: 304.58, name: '秦皇岛市'},
+        {value: 439.22, name: '张家口市'},
+        {value: 352.56, name: '承德市'},
+    ];
+    let myChart = echarts.init(document.getElementById('Death'));
+    option = {
+        title: {
+            text: '京津冀人口占比'
+        },
+        grid: {
+            top:'20%',
+            left: '5%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        tooltip: {
+            trigger: 'item'
+        },
+        series: [
+            {
+                name: '人口数(万人)',
+                type: 'pie',
+                stack: 'Ad',
+                emphasis: {
+                    focus: 'series'
+                },
+                data: dataall,
+            },
+        ]
+    };
+    myChart.setOption(option);// 重新加载图表
+
+
+</script>
+</body>
+</html>

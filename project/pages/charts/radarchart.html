@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>具体省份</title>
+    <script src="../../js/d3.min.js"></script>
+    <script src="../../js/d3-v6-tip.js"></script>
+    <link rel="stylesheet" href="../../css/d3-tip.min.css"/>
+    <link rel="stylesheet" href="../../css/geo.css"/>
+    <link rel="stylesheet" href="../../css/cind.css"/>
+<!--    <link rel="preconnect" href="https://fonts.googleapis.com">-->
+<!--    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>-->
+<!--    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">-->
+    <style>
+        *{
+            font-family: 微软雅黑;
+        }
+        body {
+            max-width: 1920px;
+            /*background: url(../papyrus.png) no-repeat center center;*/
+            /*background-size: cover;*/
+            /*background-attachment: fixed;*/
+            background-color: rgba(204, 204, 204, 0.05);
+        }
+
+        .radarChart {
+            margin: 30px auto;
+            width: 600px;
+            height: 200px;
+            border: 1px solid rgba(211, 253, 250, 0.8);
+        }
+
+        .webs polygon,
+        .lines line {
+            fill: white;
+            fill-opacity: 0.5;
+            stroke: gray;
+            stroke-dasharray: 10 5;
+        }
+
+        .webs polygon:nth-child(odd) {
+            fill: lightgray;
+        }
+
+        .areas polygon {
+            fill-opacity: 0.5;
+            stroke-width: 3;
+        }
+
+        .areas circle {
+            fill: white;
+            stroke-width: 3;
+        }
+
+        .texts text {
+            text-anchor: middle;
+        }
+    </style>
+</head>
+<body>
+<select name="myselect" id="myselect" onchange="GetVal(this)">
+    <option value="RadarChart">RadarChart</option>
+    <option value="BarChart">BarChart</option>
+</select>
+<div id="barchart"></div>
+<div id="radarChart" class="container"></div>
+<script src="../../js/min_chart.js"></script>
+<script>
+    var pdata = {
+        "AQI": 240.110001,
+        "CO(毫克每立方米)": 2.860000,
+        "SO2(微克每立方米)": 131.149994,
+        "Major pollutants": "PM2.5",
+        "NO2(微克每立方米)": 114.610001,
+        "O3(微克每立方米)": 19.209999,
+        "PM2.5(微克每立方米)": 190.110001,
+        "PM10(微克每立方米)": 306.320007
+    };
+    var init_chartname = document.getElementById("myselect").value;
+    if (init_chartname === 'BarChart') {
+        min_barchart(pdata);
+    } else if (init_chartname === 'RadarChart') {
+        min_radarchart(pdata);
+    }
+    var pollution="PM2.5(微克每立方米)";
+    window.addEventListener("storage", event => {
+        if (event.key === 'id') {
+            pdata = {
+                "AQI": window.localStorage.AQI,
+                "CO(毫克每立方米)": window.localStorage.CO,
+                "SO2(微克每立方米)": window.localStorage.SO2,
+                "Major pollutants": window.localStorage.MP,
+                "NO2(微克每立方米)": window.localStorage.NO2,
+                "O3(微克每立方米)": window.localStorage.O3,
+                "PM2.5(微克每立方米)": window.localStorage.PM2,
+                "PM10(微克每立方米)": window.localStorage.PM10
+            }
+            var chartname = document.getElementById("myselect").value;
+            console.log(chartname)
+            if (chartname === 'BarChart') {
+                min_barchart(pdata);
+            } else if (chartname === 'RadarChart') {
+                min_radarchart(pdata);
+            }else if(chartname==='ScatterChart'){
+                window.location.replace("./scatterchart.html")
+            }
+        } else if (event.key === 'ymd') {
+            var ppst=window.localStorage.pst;
+            var mymd=event.newValue;
+            var chartname = document.getElementById("myselect").value;
+            console.log(chartname)
+            if (chartname === 'BarChart') {
+                data_min_chart(ppst,mymd,"bar");
+            } else if (chartname === 'RadarChart') {
+                data_min_chart(ppst,mymd,"rar");
+            }else if(chartname==='ScatterChart'){
+                window.location.replace("./scatterchart.html")
+            }
+        }else if(event.key==='pollution'){
+            pollution=event.newValue;
+            console.log(pollution);
+            var chartname = document.getElementById("myselect").value;
+            console.log(chartname)
+            if (chartname === 'BarChart') {
+                min_barchart(pdata,pollution);
+            } else if (chartname === 'RadarChart') {
+                min_radarchart(pdata,pollution);
+            }else if(chartname==='ScatterChart'){
+                window.location.replace("./scatterchart.html")
+            }
+        }
+    })
+
+    function GetVal(obj) {
+        var index = obj.selectedIndex;
+        var txt = obj.options[index].value;
+        if (txt === 'RadarChart') {
+            console.log(2);
+            min_radarchart(pdata);
+        } else if (txt === 'BarChart') {
+            min_barchart(pdata)
+        }else if(txt==='ScatterChart'){
+            window.location.replace("./scatterchart.html")
+        }
+    }
+</script>
+</body>
+</html>

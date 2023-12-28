@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>大气污染可视分析</title>
+    <!-- plugins:css -->
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/echarts.min.js"></script>
+</head>
+
+<body>
+
+
+<div class="card-body">
+    <h4 class="card-title"></h4>
+    <div id="Death" style="width: 600px;height:370px;"></div>
+</div>
+
+<script>
+    let myChart = echarts.init(document.getElementById('Death'));
+    option = {
+
+        legend: {
+
+        },
+        grid: {
+            left: '5%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        tooltip: {
+            trigger: 'axis',
+            formatter: function (params) {
+                var result = '';
+                result += params[0].name + '<br />';
+                for (var i = 0; i < params.length; i++) {
+                    result += params[i].seriesName + ': ' + params[i].value + '<br />';
+                }
+                return result;
+            },
+            position: function (point, params, dom, rect, size) {
+                //  size为当前窗口大小
+                if ((size.viewSize[0] / 2) >= point[0]) {
+                    //其中point为当前鼠标的位置
+                    return [point[0] + 50, '10%'];
+                } else {
+                    //其中point为当前鼠标的位置
+                    return [point[0] - 200, '10%'];
+                }
+            },
+        },
+        xAxis: [
+            {
+                type: 'category',
+                data: ['安徽', '北京', '福建', '广东', '河北', '河南', '湖北', '湖南', '江苏', '江西', '山东', '上海', '山西', '天津', '浙江'],
+                axisLabel: {
+                    rotate: '45'
+                },
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value',
+                name: 'PM2.5相关死亡人数/万人',
+                nameRotate: '90',
+                nameGap: '30',
+                nameLocation: 'center',
+                min: 0,
+                max: 16,
+                interval: 1,
+            },
+        ],
+        series: [
+            {
+                name: 'COPD',
+                type: 'bar',
+                stack: 'Ad',
+                emphasis: {
+                    focus: 'series'
+                },
+                data: [0.45, 0.001, 0.01, 0.56, 0.43, 0.97, 0.47, 0.45, 0.46, 0.29, 0.88, 0.003, 0.09, 0.002, 0.12],
+                itemStyle: {
+                    color: '#1982c4' // 更改第二个系列的颜色为橙色
+                }
+            },
+            {
+                name: 'IHD',
+                type: 'bar',
+                stack: 'Ad',
+                emphasis: {
+                    focus: 'series'
+                },
+                data: [1.42, 0.89, 0.72, 2.11, 2.81, 2.98, 1.35, 1.62, 1.26, 0.88, 3.09, 0.23, 1.02, 0.45, 0.46],
+                itemStyle: {
+                    color: '#74c69d' // 更改第二个系列的颜色为橙色
+                }
+            },
+            {
+                name: 'LC',
+                type: 'bar',
+                stack: 'Ad',
+                emphasis: {
+                    focus: 'series'
+                },
+                data: [0.35, 0.002, 0.001, 0.32, 0.95, 0.75, 0.36, 0.27, 0.42, 0.12, 1.22, 0.002, 0.26, 0.001, 0.11],
+                itemStyle: {
+                    color: '#ffca3a' // 更改第二个系列的颜色为橙色
+                }
+            },
+            {
+                name: 'STK',
+                type: 'bar',
+                stack: 'Ad',
+                emphasis: {
+                    focus: 'series'
+                },
+                data: [3.04, 0.88, 0.82, 2.96, 5.88, 6.34, 3.52, 3.39, 3.43, 1.32, 5.58, 0.78, 2.22, 0.89, 1.42],
+                itemStyle: {
+                    color: '#fab1a0' // 更改第二个系列的颜色为橙色
+                }
+            },
+        ]
+    };
+    myChart.setOption(option);// 重新加载图表
+
+
+</script>
+</body>
+</html>

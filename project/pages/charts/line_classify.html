@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>某省某月各城市污染类型变化</title>
+    <!-- 加载 D3.js -->
+      <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/echarts.min.js"></script>
+
+    <style>
+        /* 可以添加自定义的 CSS 样式 */
+        #parallel-coordinates-chart {
+            width: 100%;
+            height: 400px; /* 根据需要调整高度 */
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="Line_Pollution_Type" style="width: 880px;height:280px;"></div>
+
+<script type="text/javascript">
+    let province = '山东省';
+    let year = "2013";
+    let month = "01";
+    url = "../../data/" + province +'/'+ year + month+ ".json";
+
+    let myChart = echarts.init(document.getElementById('Line_Pollution_Type'));
+    function dataChange2(url) {
+        // console.log(url)
+        $.get(url, function (data) {
+                // console.log(typeof (data[0]));
+                let temp_day = [];
+                for (let i = 1, size = data[0].length; i < size; i++) {
+                    temp_day.push(data[0][i])
+                }
+                data[0] = temp_day;
+                let day = data[0];
+
+                // 基于准备好的dom，初始化echarts实例
+                let city = [];
+
+                for (let i = 1, size = data.length; i < size; i++) {
+                    city.push(data[i][0]);
+                    let temp = [];
+                    for (let j = 1, size = data[i].length; j < size; j++) {
+                        temp.push(data[i][j]);
+                    }
+                    // console.log(temp);
+                    data[i] = temp;
+                }
+                // console.log(city)
+                // console.log(data);
+                // console.log(url.split('/'))
+                // console.log(url.split('/')[2])
+
+                var option = {
+                    animation: false,
+                    title: {
+                        text: url.split('/')[3],
+                        x: 'center',
+                        padding: 30
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        formatter: function (params) {
+                            var result = '';
+                            result += params[0].name + '<br />';
+                            for (var i = 0; i < params.length; i++) {
+                                result += params[i].seriesName + ': ' + params[i].value + '<br />';
+                            }
+                            return result;
+                        },
+                        position: function (point, params, dom, rect, size) {
+                            //  size为当前窗口大小
+                            if ((size.viewSize[0] / 2) >= point[0]) {
+                                //其中point为当前鼠标的位置
+                                return [point[0] + 50, '10%'];
+                            } else {
+                                //其中point为当前鼠标的位置
+                                return [point[0] - 200, '10%'];
+                            }
+                        },
+                    },
+                    legend: {
+                        x: 'center',
+                        y: 'top',
+                        type: 'scroll',
+                        // orient: 'vertical',
+                        //unselect:
+                        //     function (city) {
+                        //     let dic = new Array();
+                        //     for (let i = 0; i < city.size; i++) {
+                        //         if (i === 0) {
+                        //             dic[city[i]] = 'true';
+                        //         }
+                        //         else{
+                        //             dic[city[i]] = 'false';
+                        //         }
+                        //     }
+                        //     console.log(dic)
+                        //     return dic;
+                        // },
+                        data: city
+                    },
+
+                    dataZoom: [
+                        {
+                            height: 20, //时间滚动条的高度
+                            type: 'slider', //type的作用是指定数据缩放的类型，slider表示使用滑动条进行缩放，inside表示使用鼠标滚轮进行缩放。
+                            xAxisIndex: 0, //作用在x轴的下标（因为x轴可以有多个）
+                            minValueSpan: 4,
+                            filterMode: 'filter', //间滚动条的过滤模式,'filter'表示滑动时间条时会直接过滤掉不在时间范围内的数据，'weakFilter'表示滑动时间条时会逐渐过滤掉不在时间范围内的数据。
+                            start: 0,  //默认开始位置（百分比）
+                            end: 100,  //默认结束位置（百分比）
+                        },
+                        {
+                            type: 'inside',
+                            xAxisIndex: 0,
+                            filterMode: 'filter',
+                            start: 0,
+                            end: 100,
+                        },
+                    ],
+                    xAxis: [
+                        {
+                            type: 'category',
+                            boundaryGap: false,
+                            data: (function () {
+                                var temp_day = [];
+                                for (var i = 0, size = day.length; i < size; i++) {
+                                    temp_day.push(day[i]);
+                                }
+                                console.log(temp_day);
+                                return temp_day;
+                            })()
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'category',
+                            data: ['偏二次型', '偏沙尘型', '偏燃煤型', '偏机动车型', '偏烟花型', '偏钢铁型', '标准型']
+                        }
+                    ],
+                    series: []
+                };
+
+
+                //折线图数据加载
+                $(document).ready(function () {
+                    var Item = function () {
+                        return {
+                            name: '',
+                            type: 'line',
+                            // stack: '总量',
+                            smooth: 'true',
+                            itemStyle: {data: []}
+                        }
+                    };
+                    var Series = [];
+                    var type_data = [];
+                    for (var i = 1; i < data.length; i++) {
+                        type_data = [];
+                        var it = new Item();
+                        it.name = city[i - 1];
+                        type_data = data[i];
+                        it.data = type_data;
+                        Series.push(it);
+                    }
+
+                    option.series = Series; // 设置图表
+                    myChart.setOption(option);// 重新加载图表
+                });
+
+
+            }
+        )
+    }
+
+    dataChange2(url)
+    // 图例点击事件
+    var triggerAction = function (action, selected) {
+        legend = [];
+
+        for (name in selected) {
+            if (selected.hasOwnProperty(name)) {
+                legend.push({name: name});
+            }
+        }
+
+        myChart.dispatchAction({
+            type: action,
+            batch: legend
+        });
+    };
+
+    var isFirstUnSelect = function (selected) {
+
+        var unSelectedCount = 0;
+        for (name in selected) {
+            if (!selected.hasOwnProperty(name)) {
+                continue;
+            }
+
+            if (selected[name] == false) {
+                ++unSelectedCount;
+            }
+        }
+        return unSelectedCount == 1;
+    };
+
+    var isAllUnSelected = function (selected) {
+        var selectedCount = 0;
+        for (name in selected) {
+            if (!selected.hasOwnProperty(name)) {
+                continue;
+            }
+
+            // 所有 selected Object 里面 true 代表 selected， false 代表 unselected
+            if (selected[name] == true) {
+                ++selectedCount;
+            }
+        }
+        return selectedCount == 0;
+    };
+    // myChart.on('legendselectchanged', function (params) {
+    //     myChart.setOption({
+    //         legend: {selected: {[params.name]: true}}
+    //     })
+    //     console.log('点击了', params.name);
+    //     // do something
+    // });
+    myChart.on('legendselectchanged', function (obj) {
+        var selected = obj.selected;
+        var legend = obj.name;
+
+        // 使用 legendToggleSelect Action 会重新触发 legendselectchanged Event，导致本函数重复运行
+        // 使得 无 selected 对象
+        if (selected != undefined) {
+
+            if (isFirstUnSelect(selected)) {
+                triggerAction('legendToggleSelect', selected);
+            } else if (isAllUnSelected(selected)) {
+                triggerAction('legendSelect', selected);
+
+            }
+        }
+
+    });
+window.addEventListener('storage', event => {
+    console.log('Storage event captured:', event);
+    if (event.key == 'name') {
+            province = event.newValue;
+
+         url = "../../data/" + province +'/'+ year + month+ ".json";
+        dataChange2(url);
+    } else if (event.key == 'ymd') {
+        ymd = event.newValue;
+        year = ymd[0] + ymd[1] + ymd[2] + ymd[3];
+        month = ymd[5] + ymd[6];
+        url = "../../data/" + province +'/'+ year + month+ ".json";
+        dataChange2(url);
+    }
+});
+
+
+</script>
+
+</body>
+</html>

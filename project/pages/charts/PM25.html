@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>全国空气质量热力图</title>
+      <script src="../../js/d3.min.js"></script>
+    <script src="../../js/d3-v6-tip.js"></script>
+    <link rel="stylesheet" href="../../css/d3-tip.min.css" />
+    <link rel="stylesheet" href="../../css/cind.css" />
+    <link rel="stylesheet" href="../../css/geo.css">
+<!--    <link rel="preconnect" href="https://fonts.googleapis.com">-->
+<!--    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>-->
+<!--    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">-->
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        font-family: 微软雅黑;
+        overflow: hidden;
+      }
+
+      body {
+        max-width: 1920px;
+        /*background: url(https://static.runoob.com/images/demo/demo2.jpg) no-repeat center center;*/
+        /*background-size: cover;*/
+        /*background-attachment: fixed;*/
+        background-color: rgba(204, 204, 204, 0.01);
+      }
+
+      #btn {
+        position: absolute;
+        top: 22%;
+        left: 298px;
+        height: 75px;
+        border: 0;
+        border-left: 1px solid rgb(23, 32, 43);
+        background: #aa3344;
+        color: #fff;
+        cursor: pointer;
+      }
+
+      .box {
+        float: left;
+        position: relative;
+        left: 0;
+        height: 1000px;
+        width: 300px;
+        margin-left: 0;
+        display: block;
+        background-color: #a34;
+        -moz-transition: margin-left 0.1s;
+        transition: margin-left 0.1s;
+      }
+
+      aside ul li {
+        height: 40px;
+        line-height: 40px;
+        border-top: 1px solid #fff;
+        border-bottom: 1px solid #fff;
+        list-style-type: none;
+        text-align: center;
+      }
+
+      aside ul li a {
+        width: 100%;
+        height: 100%;
+        text-decoration-line: none;
+        color: #fff;
+        display: block;
+      }
+
+      aside ul li a:hover {
+        background: #d3d;
+      }
+    </style>
+  </head>
+  <body>
+    <form>
+      <div>
+        <label id="party" style="color: #aaa">Choose date:</label>
+        <input
+          type="date"
+          id="date"
+          name="date"
+          value="2013-01-01"
+          min="2013-01-01"
+          max="2018-12-31"
+        />
+      </div>
+    </form>
+    <!--<button class="button button4">全国空气质量热力图</button>
+    <button class="button button5" onclick="windmap()">全国风场图</button>
+    <button class="button button5" onclick="cluster1()">模式聚类图</button>-->
+    <svg class="chart"></svg>
+  </body>
+  <script src="../../js/index1.js"></script>
+<script src="../../js/hotmap.js"></script>
+
+</html>

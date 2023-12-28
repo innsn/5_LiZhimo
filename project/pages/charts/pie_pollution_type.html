@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>某省某月各城市污染类型变化</title>
+    <!-- 加载 D3.js -->
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/echarts.min.js"></script>
+
+    <style>
+        /* 可以添加自定义的 CSS 样式 */
+        #parallel-coordinates-chart {
+            width: 100%;
+            height: 400px; /* 根据需要调整高度 */
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="Pie_Pollution_Type" style="width: 480px;height:280px;"></div>
+
+<script type="text/javascript">
+    let province = '山东省';
+    let year = '2013';
+    let month = '04';
+    url = "../../data/" + province + '/' + year + month + ".json";
+    console.log(url);
+    let myChart = echarts.init(document.getElementById('Pie_Pollution_Type'));
+
+    function dataChange2(url) {
+        // console.log(url)
+        $.get(url, function (data) {
+                console.log(data);
+                let num0 = 0;
+                let num1 = 0;
+                let num2 = 0;
+                let num3 = 0;
+                let num4 = 0;
+                let num5 = 0;
+                let num6 = 0;
+                for (let i = 1; i < data.length; i++) {
+                    for (let j = 1; j < data[i].length; j++) {
+                        if (data[i][j] === '偏二次型') {
+                            num0++;
+                        } else if (data[i][j] === '偏沙尘型') {
+                            num1++;
+                        } else if (data[i][j] === '偏燃煤型') {
+                            num2++;
+                        } else if (data[i][j] === '偏机动车型') {
+                            num3++;
+                        } else if (data[i][j] === '偏烟花型') {
+                            num4++;
+                        } else if (data[i][j] === '偏钢铁型') {
+                            num5++;
+                        } else {
+                            num6++;
+                        }
+                    }
+                }
+                let option = {
+                    animation: false,
+                    title: {
+                        text: url.split('/')[3].split('.')[0],
+                        x: 'center',
+                        padding: 30
+                    },
+                    tooltip: {
+                        trigger: 'item'
+                    },
+                    legend: {
+                        orient: 'vertical',
+                        x: 'left',      //可设定图例在左、右、居中
+                        y: 'center',     //可设定图例在上、下、居中
+                        padding: [0, 50, 0, 0],   //可设定图例[距上方距离，距右方距离，距下方距离，距左方距离]
+                        data: ['偏二次型', '偏沙尘型', '偏燃煤型', '偏机动车型', '偏烟花型', '偏钢铁型', '标准型'],
+                        itemWidth: 9, // 设置图例标记的宽度
+                         itemHeight: 10 // 设置图例标记的高度
+                    },
+                    series: [
+                        {
+                            name: url.split('/')[3].split('.')[0] + '污染类型占比',
+                            type: 'pie',
+                            radius: '60%',
+                            color: ["#b2182b","#ef8a62","#fddbc7", "#e0f3f8","#d1e5f0", "#67a9cf", "#2166ac",   ],
+                            data: [
+                                {value: num0, name: '偏二次型'},
+                                {value: num1, name: '偏沙尘型'},
+                                {value: num2, name: '偏燃煤型'},
+                                {value: num3, name: '偏机动车型'},
+                                {value: num4, name: '偏烟花型'},
+                                {value: num5, name: '偏钢铁型'},
+                                {value: num6, name: '标准型'}
+                            ],
+                            emphasis: {
+                                itemStyle: {
+                                    shadowBlur: 10,
+                                    shadowOffsetX: 0,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                }
+                            }
+                        }
+                    ]
+                };
+                myChart.setOption(option);
+            }
+        )
+    }
+
+    dataChange2(url)
+window.addEventListener('storage', event => {
+    console.log('Storage event captured:', event);
+    if (event.key == 'name') {
+            province = event.newValue;
+
+         url = "../../data/" + province +'/'+ year + month+ ".json";
+        dataChange2(url);
+    } else if (event.key == 'ymd') {
+        ymd = event.newValue;
+        year = ymd[0] + ymd[1] + ymd[2] + ymd[3];
+        month = ymd[5] + ymd[6];
+        url = "../../data/" + province +'/'+ year + month+ ".json";
+        dataChange2(url);
+    }
+});
+</script>
+</body>

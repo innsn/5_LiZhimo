@@ -1,0 +1,44 @@
+let autoplay = false;
+let sliderValue = 0;
+let intervalId = null;
+
+const playButton = document.getElementById('playButton');
+playButton.addEventListener('click', toggleAutoplay);
+
+function toggleAutoplay() {
+  autoplay = !autoplay;
+
+  if (autoplay) {
+    playButton.textContent = 'Pause';
+    intervalId = setInterval(playSlider, 1000); // 每100毫秒移动滑块一次
+  } else {
+    playButton.textContent = 'Play';
+    clearInterval(intervalId);
+  }
+}
+
+function playSlider() {
+  const slider = document.getElementById('dateSlider');
+
+  // 获取当前日期
+  const currentDate = new Date(year + '-' + month + '-' + day);
+  const startDate = new Date("2013-01-01");
+  const endDate = new Date("2018-12-31");
+  const totalDays = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24));
+
+  // 计算当前日期与起始日期之间的天数差
+  const daysDiff = Math.floor((currentDate - startDate) / (1000 * 60 * 60 * 24));
+
+  // 设置滑块值
+  if (sliderValue <= totalDays) {
+    slider.value = daysDiff; // 设置滑块值为当前日期与起始日期之间的天数差
+    sliderValue++;
+  } else {
+    autoplay = false;
+    playButton.textContent = 'Play';
+    clearInterval(intervalId);
+  }
+
+  // 更新地图
+  updateMapBySlider({ target: { value: slider.value } });
+}

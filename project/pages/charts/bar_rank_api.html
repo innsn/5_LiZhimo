@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>某省某月各城市污染类型变化</title>
+    <!-- 加载 D3.js -->
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/echarts.min.js"></script>
+
+    <style>
+        /* 可以添加自定义的 CSS 样式 */
+        #parallel-coordinates-chart {
+            width: 100%;
+            height: 400px; /* 根据需要调整高度 */
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="Bar_Rank_Aqi" style="width: 500px;height:400px;"></div>
+
+<script type="text/javascript">
+    //右边横向条形图
+    Time = '2013-01-01';
+
+    url = "../../data/" + 'aqi_rank/' + Time + ".json";
+    var mychart5 = echarts.init(document.getElementById('Bar_Rank_Aqi'));
+    function dataChange2(url) {
+        console.log(url)
+        $.get(url, function (data) {
+            //初始化图标
+
+            console.log(data);
+            var option = {
+                title: {
+                    text: 'AQI前十省份',
+                },
+                //图表位置
+                grid: {
+                    left: "1%",
+                    right: "4%",
+                    bottom: "1%",
+                    containLabel: true,
+                },
+                //X轴
+                xAxis: {
+                    type: "value",
+                    axisLine: {
+                        show: false,
+                    },
+                    axisTick: {
+                        show: false,
+                    },
+                    //不显示X轴刻度线和数字
+                    splitLine: {show: false},
+                    axisLabel: {show: false},
+                },
+                yAxis: {
+                    type: "category",
+                    max: 9,
+                    //升序
+                    inverse: true,
+                    offset: 1,
+                    //key文字大小
+                    nameTextStyle: {
+                        fontSize: 5,
+                    },
+                    data: data[0],
+                },
+                series: [
+                    {
+                        name: '',
+                        type: "bar",
+                        data: data[1],
+                        barWidth: 20,
+                        barGap: 5,
+                        //Y轴数字显示部分
+                        label: {
+                            normal: {
+                                show: true,
+                                position: "middle",
+                                textStyle: {
+                                    color: "#fef0d9",
+                                    fontSize: 13,
+                                },
+                            },
+                        },
+                    },
+                ],
+            };
+            mychart5.setOption(option);
+        })
+    }
+
+    dataChange2(url);
+
+window.addEventListener('storage', event => {
+    if (event.key === 'ymd') {
+        ymd = event.newValue;
+        year = ymd[0] + ymd[1] + ymd[2] + ymd[3];
+        month = ymd[5] + ymd[6];
+        day = ymd[8] + ymd[9];
+        Time = year + "-" + month + "-" + day;
+           url = "../../data/" + 'aqi_rank/' + Time + ".json";
+
+       dataChange2(url);
+    }
+})
+
+</script>
+</body>

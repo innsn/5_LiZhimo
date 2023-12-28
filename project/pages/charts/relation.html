@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!DOCTYPE html>
+    <meta charset="utf-8">
+
+    <!-- Load d3.js -->
+    <script src="../../js/d3.v4.js"></script>
+
+    <!-- Create a div where the graph will take place -->
+
+
+</head>
+<body>
+<div id="my_dataviz"></div>
+</body>
+
+<script>
+    let province = '山东省';
+    url = "../../data/fenxi/" + province + ".csv";
+    console.log(url);
+
+    function dataChange(url)
+    {
+    d3.select("#my_dataviz").selectAll("svg").remove();
+        // Graph dimension
+        var margin = {top: 20, right: 20, bottom: 20, left: 20},
+            width = 330 - margin.left - margin.right,
+            height = 330 - margin.top - margin.bottom
+
+        // Create the svg area
+        var svg = d3.select("#my_dataviz")
+            .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        svg.append("text")
+        .attr("x", width / 2)
+        .attr("y", -margin.top / 2+10)
+        .attr("text-anchor", "middle")
+        .style("font-size", "15px")
+        .text(province);
+
+        d3.csv(url, function (error, rows) {
+
+            // Going from wide to long format
+            var data = [];
+            rows.forEach(function (d) {
+                var x = d[""];
+                delete d[""];
+                for (prop in d) {
+                    var y = prop,
+                        value = d[prop];
+                    data.push({
+                        x: x,
+                        y: y,
+                        value: +value
+                    });
+                }
+            });
+
+            // List of all variables and number of them
+            var domain = d3.set(data.map(function (d) {
+                return d.x
+            })).values()
+            var num = Math.sqrt(data.length)
+
+            // Create a color scale
+            var color = d3.scaleLinear()
+                .domain([-1, 0, 1])
+                .range(["#000080", "#fff", "#B22222"]);
+
+            // Create a size scale for bubbles on top right. Watch out: must be a rootscale!
+            var size = d3.scaleSqrt()
+                .domain([0, 1])
+                .range([0, 9]);
+
+            // X scale
+            var x = d3.scalePoint()
+                .range([0, width])
+                .domain(domain)
+                .padding(120)
+
+            // Y scale
+            var y = d3.scalePoint()
+                .range([0, height])
+                .domain(domain)
+                .padding(120)
+
+            // Create one 'g' element for each cell of the correlogram
+            var cor = svg.selectAll(".cor")
+                .data(data)
+                .enter()
+                .append("g")
+                .attr("class", "cor")
+                .attr("transform", function (d) {
+                    return "translate(" + (x(d.x) - 5) + "," + (y(d.y) - 5) + ")";
+                });
+
+            // Low left part + Diagonal: Add the text with specific color
+            cor
+                .filter(function (d) {
+                    var ypos = domain.indexOf(d.y);
+                    var xpos = domain.indexOf(d.x);
+                    return xpos <= ypos;
+                })
+                .append("text")
+                .attr("y", 5)
+                .text(function (d) {
+                    if (d.x === d.y) {
+                        return d.x;
+                    } else {
+                        return d.value.toFixed(2);
+                    }
+                })
+                .style("font-size", 8)
+                .style("text-align", "center")
+                .style("fill", function (d) {
+                    if (d.x === d.y) {
+                        return "#000";
+                    } else {
+                        return color(d.value);
+                    }
+                });
+
+
+            // Up right part: add circles
+            cor
+                .filter(function (d) {
+                    var ypos = domain.indexOf(d.y);
+                    var xpos = domain.indexOf(d.x);
+                    return xpos > ypos;
+                })
+                .append("circle")
+                .attr("r", function (d) {
+                    return size(Math.abs(d.value))
+                })
+                .style("fill", function (d) {
+                    if (d.x === d.y) {
+                        return "#000";
+                    } else {
+                        return color(d.value);
+                    }
+                })
+                .style("opacity", 0.8)
+
+
+        })
+    }
+
+
+
+  dataChange(url);
+window.addEventListener('storage', event => {
+    if (event.key === 'name') {
+       province = event.newValue;
+        url = "../../data/fenxi/" + province + ".csv";
+
+        dataChange(url);
+    }
+})
+
+
+</script>
+</html>
+

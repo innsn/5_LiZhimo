@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>某省某月各城市污染类型变化</title>
+    <!-- 加载 D3.js -->
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/echarts.min.js"></script>
+
+    <style>
+        /* 可以添加自定义的 CSS 样式 */
+        #parallel-coordinates-chart {
+            width: 100%;
+            height: 400px; /* 根据需要调整高度 */
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="Random_forest_CO" style="width: 900px;height:400px;"></div>
+<script type="text/javascript">
+
+    let pollution = 'CO';
+    url = "../../data/Random_Forest/" + pollution + ".json";
+    let myChart2 = echarts.init(document.getElementById('Random_forest_CO'));
+
+    let color = ["#FFDEAD", "#E6E6FA", "#2F4F4F", "#6A5ACD", "#0000FF", "#66CDAA", "#006400", "#00FF7F", "#B22222", "#FFA500", "#B03060", "#9932CC", "#8B8682"];
+
+
+    function dataChange(url) {
+        console.log(url)
+        $.get(url, function (data) {
+            console.log(data)
+
+            for (let i = 0; i < data.length; i++) {
+                for (let j = 0; j < i; j++) {
+                    let temp = [];
+                    if (data[j][1] > data[i][1]) {
+                        temp.push(data[j][0]);
+                        temp.push(data[j][1]);
+                        data[j][0] = data[i][0];
+                        data[j][1] = data[i][1];
+                        data[i][0] = temp[0];
+                        data[i][1] = temp[1];
+                    }
+                }
+            }
+
+
+            let y_axis = []
+            let pos = [];
+            for (let i = 0; i < data.length; i++) {
+                y_axis.push(data[i][0]);
+                pos.push(data[i][1]);
+            }
+
+            let option = {
+                title: {
+                    text: 'Random Forest Feature Importance of CO',
+                    left: '5%',
+                    top: '3%'
+                },
+                grid: {
+                    left: '12%',
+                    top: '10%'
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    formatter: function (params) {
+                        let result = '';
+                        result += params[0].name + '<br />';
+                        for (let i = 0; i < params.length; i++) {
+                            result += params[i].seriesName + ': ' + params[i].value + '<br />';
+                        }
+                        return result;
+                    },
+                    position: function (point, params, dom, rect, size) {
+                        //  size为当前窗口大小
+                        if ((size.viewSize[0] / 2) >= point[0]) {
+                            //其中point为当前鼠标的位置
+                            return [point[0] + 50, '10%'];
+                        } else {
+                            //其中point为当前鼠标的位置
+                            return [point[0] - 200, '10%'];
+                        }
+                    },
+
+                },
+                xAxis: {
+                    splitLine: {
+                        lineStyle: {
+                            type: 'value'
+                        }
+                    },
+                    name: 'Feature Importance',
+                    nameGap: '30',
+                    nameLocation: 'center',
+                },
+                yAxis: {
+                    splitLine: {
+                        lineStyle: {
+                            type: 'category'
+                        }
+                    },
+                    data: (function () {
+                        let axis = [];
+                        for (let i = 0, size = y_axis.length; i < size; i++) {
+                            axis.push(y_axis[i]);
+                        }
+                        console.log(axis);
+                        return axis;
+                    })()
+                },
+                series: [
+                    {
+                        name: '',
+                        data: pos,
+                        type: 'scatter',
+                        color: function (item) {
+                            return color[item.dataIndex];
+                        }
+                    }
+                ]
+            };
+            myChart2.setOption(option);
+        })
+    }
+
+    dataChange(url);
+
+</script>
+</body>

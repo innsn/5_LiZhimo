@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>大气污染可视分析</title>
+    <!-- plugins:css -->
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/echarts.min.js"></script>
+</head>
+
+<body>
+
+
+<div class="card-body">
+    <h4 class="card-title"></h4>
+    <div id="Line_Predict" style="width: 900px;height:550px;"></div>
+</div>
+
+<script>
+    let city = '青岛';
+    let pollution = 'co';
+    url = "../../data/lstmpred/" + city + '_translstm_' + pollution + '_' + 'median.json';
+    console.log(url);
+    let myChart = echarts.init(document.getElementById('Line_Predict'));
+
+    function dataChange2(url) {
+        $.get(url, function (data) {
+                console.log(data);
+                let temp_day = ['2018/01/15', '2018/01/16', '2018/01/17', '2018/01/18', '2018/01/19', '2018/01/20', '2018/01/21', '2018/01/22', '2018/01/23', '2018/01/24',
+                    '2018/01/25', '2018/01/26', '2018/01/27', '2018/01/28', '2018/01/29', '2018/01/30', '2018/01/31', '2018/02/01', '2018/02/02', '2018/02/03', '2018/02/04',
+                    '2018/02/05', '2018/02/06', '2018/02/07', '2018/02/08', '2018/02/09', '2018/02/10', '2018/02/11', '2018/02/12', '2018/02/13'];
+
+                let True = [];
+                let Pred = [];
+                for (let i = 0; i < data.length; i++) {
+                    True.push(data[i][1]);
+                }
+                for (let i = 0; i < data.length; i++) {
+                    Pred.push(data[i][2]);
+                }
+                let option = {
+                    animation: false,
+                    title: {
+                        text: city + '-' + pollution,
+                        x: 'center',
+                        padding: 30
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        formatter: function (params) {
+                            let result = '';
+                            result += params[0].name + '<br />';
+                            for (let i = 0; i < params.length; i++) {
+                                result += params[i].seriesName + ': ' + params[i].value + '<br />';
+                            }
+                            return result;
+                        },
+                        position: function (point, params, dom, rect, size) {
+                            //  size为当前窗口大小
+                            if ((size.viewSize[0] / 2) >= point[0]) {
+                                //其中point为当前鼠标的位置
+                                return [point[0] + 50, '10%'];
+                            } else {
+                                //其中point为当前鼠标的位置
+                                return [point[0] - 200, '10%'];
+                            }
+                        },
+                        axisPointer: {
+                            animation: false,
+                            type: 'cross',
+                            lineStyle: {
+                                color: '#376df4',
+                                width: 2,
+                                opacity: 1
+                            }
+                        }
+                    },
+                    legend: {
+                        x: 'center',
+                        y: 'top',
+                        data: ['True', 'Pred']
+                    },
+
+                    dataZoom: [
+                        {
+                            height: 20, //时间滚动条的高度
+                            type: 'slider', //type的作用是指定数据缩放的类型，slider表示使用滑动条进行缩放，inside表示使用鼠标滚轮进行缩放。
+                            xAxisIndex: 0, //作用在x轴的下标（因为x轴可以有多个）
+                            minValueSpan: 4,
+                            filterMode: 'filter', //间滚动条的过滤模式,'filter'表示滑动时间条时会直接过滤掉不在时间范围内的数据，'weakFilter'表示滑动时间条时会逐渐过滤掉不在时间范围内的数据。
+                            start: 0,  //默认开始位置（百分比）
+                            end: 100,  //默认结束位置（百分比）
+                        },
+                        {
+                            type: 'inside',
+                            xAxisIndex: 0,
+                            filterMode: 'filter',
+                            start: 0,
+                            end: 100,
+                        },
+                    ],
+                    xAxis: [
+                        {
+                            type: 'category',
+                            boundaryGap: false,
+                            data: temp_day,
+                            axisLine: {lineStyle: {color: '#8392A5'}}
+                        }
+
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value',
+                        }
+                    ],
+                    series: [
+                        {
+                            name: 'True',
+                            type: 'line',
+                            data: True
+
+                        },
+                        {
+                            name: 'Pred',
+                            type: 'line',
+                            data: Pred
+                        },],
+                };
+                myChart.setOption(option);// 重新加载图表
+            }
+        )
+    }
+
+    dataChange2(url)
+
+</script>
+</body>
+</html>

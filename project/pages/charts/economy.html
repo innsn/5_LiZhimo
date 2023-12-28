@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>大气污染可视分析</title>
+        <script src="../../js/d3.min.js"></script>
+    <script src="../../js/d3-v6-tip.js"></script>
+    <link rel="stylesheet" href="../../css/d3-tip.min.css" />
+    <link rel="stylesheet" href="../../css/cind.css" />
+    <link rel="stylesheet" href="../../css/geo.css">
+  <!-- plugins:css -->
+  <link rel="stylesheet" href="../../vendors/feather/feather.css">
+  <link rel="stylesheet" href="../../vendors/mdi/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
+  <link rel="stylesheet" href="../../vendors/typicons/typicons.css">
+  <link rel="stylesheet" href="../../vendors/simple-line-icons/css/simple-line-icons.css">
+  <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+  <!-- endinject -->
+  <!-- Plugin css for this page -->
+  <link rel="stylesheet" href="../../vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+  <link rel="stylesheet" href="../../js/select.dataTables.min.css">
+  <!-- End plugin css for this page -->
+  <!-- inject:css -->
+  <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+  <!-- endinject -->
+  <link rel="shortcut icon" href="../../images/favicon.png" />
+</head>
+<body>
+  <div class="container-scroller">
+    <!-- partial:partials/_navbar.html -->
+    <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex align-items-top flex-row">
+      <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start">
+        <div class="me-3">
+          <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-bs-toggle="minimize">
+            <span class="icon-menu"></span>
+          </button>
+        </div>
+        <div>
+          <a class="navbar-brand brand-logo" href="index.html">
+            <img src="../../images/logo.svg" alt="logo" />
+          </a>
+          <a class="navbar-brand brand-logo-mini" href="index.html">
+            <img src="../../images/logo-mini.svg" alt="logo" />
+          </a>
+        </div>
+      </div>
+      <div class="navbar-menu-wrapper d-flex align-items-top">
+        <ul class="navbar-nav">
+          <li class="nav-item font-weight-semibold d-none d-lg-block ms-0">
+            <h1 class="welcome-text"> <span class="text-black fw-bold">大气污染可视分析系统</span></h1>
+            <h3 class="welcome-sub-text">Visual analysis system for air pollution </h3>
+          </li>
+        </ul>
+<!--        <ul class="navbar-nav ms-auto">-->
+<!--          <li class="nav-item d-none d-lg-block">-->
+<!--            <input-->
+<!--          type="date"-->
+<!--          id="date"-->
+<!--          name="date"-->
+<!--          value="2013-01-01"-->
+<!--          min="2013-01-01"-->
+<!--          max="2018-12-31"-->
+<!--        />-->
+<!--          </li>-->
+<!--        </ul>-->
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
+          <span class="mdi mdi-menu"></span>
+        </button>
+      </div>
+    </nav>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+      <!-- partial:partials/_settings-panel.html -->
+      <div class="theme-setting-wrapper">
+        <div id="settings-trigger"><i class="ti-settings"></i></div>
+        <div id="theme-settings" class="settings-panel">
+          <i class="settings-close ti-close"></i>
+          <p class="settings-heading">侧边栏外观</p>
+          <div class="sidebar-bg-options selected" id="sidebar-light-theme"><div class="img-ss rounded-circle bg-light border me-3"></div>Light</div>
+          <div class="sidebar-bg-options" id="sidebar-dark-theme"><div class="img-ss rounded-circle bg-dark border me-3"></div>Dark</div>
+          <p class="settings-heading mt-2">顶部栏外观</p>
+          <div class="color-tiles mx-0 px-4">
+            <div class="tiles success"></div>
+            <div class="tiles warning"></div>
+            <div class="tiles danger"></div>
+            <div class="tiles info"></div>
+            <div class="tiles dark"></div>
+            <div class="tiles default"></div>
+          </div>
+        </div>
+      </div>
+      <!-- partial -->
+      <!-- partial:partials/_sidebar.html -->
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav">
+          <li class="nav-item">
+            <a class="nav-link" href="main.html">
+              <i class="mdi mdi-grid-large menu-icon"></i>
+              <span class="menu-title">主视图</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="wind.html">
+              <i class="mdi mdi-arrow-expand-all menu-icon"></i>
+              <span class="menu-title">污染物迁移</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="classify.html">
+              <i class="mdi mdi-chemical-weapon menu-icon"></i>
+              <span class="menu-title">污染类型和污染程度</span>
+            </a>
+          </li>
+                    <li class="nav-item">
+            <a class="nav-link" href="cause.html">
+             <i class="mdi mdi-altimeter menu-icon"></i>
+              <span class="menu-title">归因分析</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="predict.html">
+              <i class="mdi mdi-calendar-clock menu-icon"></i>
+              <span class="menu-title">预测</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="economy.html">
+              <i class="menu-icon mdi mdi-coin "></i>
+              <span class="menu-title">经济效应</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="health.html">
+              <i class="menu-icon mdi mdi-human-greeting"></i>
+              <span class="menu-title">健康效应</span>
+            </a>
+          </li>
+           <li class="nav-item">
+            <a class="nav-link" href="big.html">
+              <i class="menu-icon mdi mdi-lightbulb-outline"></i>
+              <span class="menu-title">大模型</span>
+            </a>
+          </li>
+          <li class="nav-item nav-category">Introduction</li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+              <i class="menu-icon mdi mdi-account-circle-outline"></i>
+              <span class="menu-title">开发者介绍</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="auth">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="../../pages/samples/login.html"> Login </a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item nav-category">help</li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="menu-icon mdi mdi-file-document"></i>
+              <span class="menu-title">说明文档</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- partial -->
+        <div class="main-panel">
+        <div class="content-wrapper">
+          <div class="row">
+            <div class="col-lg-8 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body"  style="pa;padding-top: 5px;padding-bottom: 5px;padding-right: 5px;padding-left: 5px;">
+                  <iframe id="chart1" class="divright_top" src="dynamic_bubble.html" width="900" height="400"></iframe>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body"  style="pa;padding-top: 5px;padding-bottom: 5px;padding-right: 5px;padding-left: 5px;">
+                   <iframe id="chart1=2" class="divright_top" src="pie_population_rate.html" width="500" height="400"></iframe>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body"  style="pa;padding-top: 5px;padding-bottom: 5px;padding-right: 5px;padding-left: 5px;">
+<h4> </h4>
+                   <img src="../../images/Figure_2.png" width="680" height="455"/>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body"  style="pa;padding-top: 5px;padding-bottom: 5px;padding-right: 5px;padding-left: 5px;">
+<h4> </h4>
+                    <img src="../../images/Figure_3.png" width="680" height="455"/>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        <!-- content-wrapper ends -->
+        <!-- partial -->
+      </div>
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
+
+  <!-- plugins:js -->
+  <script src="../../vendors/js/vendor.bundle.base.js"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page -->
+  <script src="../../vendors/chart.js/Chart.min.js"></script>
+  <script src="../../vendors/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+  <script src="../../vendors/progressbar.js/progressbar.min.js"></script>
+
+  <!-- End plugin js for this page -->
+  <!-- inject:js -->
+  <script src="../../js/off-canvas.js"></script>
+  <script src="../../js/hoverable-collapse.js"></script>
+  <script src="../../js/template.js"></script>
+  <script src="../../js/settings.js"></script>
+  <script src="../../js/todolist.js"></script>
+  <!-- endinject -->
+  <!-- Custom js for this page-->
+  <script src="../../js/dashboard.js"></script>
+  <script src="../../js/Chart.roundedBarCharts.js"></script>
+  <!-- End custom js for this page-->
+  <script src="../../js/index1.js"></script>
+</body>
+
+</html>
+

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>某省某月各城市污染类型变化</title>
+    <!-- 加载 D3.js -->
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/echarts.min.js"></script>
+
+    <style>
+        /* 可以添加自定义的 CSS 样式 */
+        #parallel-coordinates-chart {
+            width: 100%;
+            height: 400px; /* 根据需要调整高度 */
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="Bubble" style="width: 890px;height:380px;"></div>
+<script type="text/javascript">
+    let myChart2 = echarts.init(document.getElementById('Bubble'));
+
+    let dataall = [
+        [23014.59, 195.59, 87.8, '北京市', 1990],
+        [16538.19, 196.04, 60.29, '天津市', 1990],
+        [1014.42, 109.19, 34.87, '保定市', 1990],
+        [2909.81, 109.56, 32.87, '石家庄市', 1990],
+        [650.31, 173.11, 32.33, '沧州市', 1990],
+        [3165.32, 163.94, 29.8, '唐山市', 1990],
+        [807.73, 76.23, 22.18, '邯郸市', 1990],
+        [789.25, 150.1, 17.87, '廊坊市', 1990],
+        [280.97, 41.33, 12.81, '邢台市', 1990],
+        [284.77, 80.41, 11.52, '衡水市', 1990],
+        [854.61, 96.19, 6.9, '秦皇岛市', 1990],
+        [534.55, 68.32, 5.43, '张家口市', 1990],
+        [283.06, 69.68, 4.68, '承德市', 1990],
+    ];
+    let color = ["#FFDEAD", "#E6E6FA", "#2F4F4F", "#6A5ACD", "#0000FF", "#66CDAA", "#006400", "#00FF7F", "#B22222", "#FFA500", "#B03060", "#9932CC", "#8B8682"];
+    console.log(dataall)
+    console.log(dataall[2])
+
+    let option = {
+        title: {
+            text: 'Life Expectancy and GDP by Country',
+            left: '5%',
+            top: '3%'
+        },
+        legend: {
+            right: '10%',
+            top: '3%',
+            data: ['2015']
+        },
+        grid: {
+            left: '8%',
+            top: '10%'
+        },
+        xAxis: {
+            splitLine: {
+                lineStyle: {
+                    type: 'dashed'
+                }
+            }
+        },
+        yAxis: {
+            splitLine: {
+                lineStyle: {
+                    type: 'dashed'
+                }
+            },
+            scale: true
+        },
+        series: [
+            {
+                name: '2015',
+                data: dataall,
+                type: 'scatter',
+                symbolSize: function (data) {
+                    return Math.sqrt(data[2]) * 3;
+                },
+                emphasis: {
+                    focus: 'series',
+                    label: {
+                        show: true,
+                        formatter: function (params) {
+                            var result = '';
+                            // for (var i = 0; i < params.length; i++) {
+                            //     result +=  params[i].value + '<br />';
+                            // }
+                            result += "城市: " + params.data[3] + "\n";
+                            result += "国内生产总值: " + params.data[0] + "亿元" + "\n";
+                            result += "总经济损失: " + params.data[2] + "亿元" + "\n";
+                            result += "统计寿命价值: " + params.data[1] + "万元/人" + "\n";
+
+                            return result;
+                        },
+                        position: 'bottom',
+                        color: 'black'
+                    }
+                },
+                itemStyle: {
+                    shadowBlur: 10,
+                    shadowColor: 'rgba(120, 36, 50, 0.5)',
+                    shadowOffsetY: 5,
+                    color: function (item) {
+                        console.log(item);
+                        return color[item.dataIndex];
+                    }
+                }
+            },
+        ]
+    };
+    myChart2.setOption(option);
+
+</script>
+</body>
