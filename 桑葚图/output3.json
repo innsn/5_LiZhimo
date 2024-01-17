@@ -1,0 +1,133 @@
+{
+    "nodes": [
+        {
+            "name": "pm25"
+        },
+        {
+            "name": "pm10"
+        },
+        {
+            "name": "so2"
+        },
+        {
+            "name": "no2"
+        },
+        {
+            "name": "co"
+        },
+        {
+            "name": "春"
+        },
+        {
+            "name": "夏"
+        },
+        {
+            "name": "秋"
+        },
+        {
+            "name": "冬"
+        }
+    ],
+    "links": [
+        {
+            "source": "pm25",
+            "target": "春",
+            "value": 0.144230824
+        },
+        {
+            "source": "pm25",
+            "target": "夏",
+            "value": 0.17385273
+        },
+        {
+            "source": "pm25",
+            "target": "秋",
+            "value": 0.134435285
+        },
+        {
+            "source": "pm25",
+            "target": "冬",
+            "value": 0.110964722
+        },
+        {
+            "source": "pm10",
+            "target": "春",
+            "value": 0.075040763
+        },
+        {
+            "source": "pm10",
+            "target": "夏",
+            "value": 0.070790295
+        },
+        {
+            "source": "pm10",
+            "target": "秋",
+            "value": 0.071501419
+        },
+        {
+            "source": "pm10",
+            "target": "冬",
+            "value": 0.055604662
+        },
+        {
+            "source": "so2",
+            "target": "春",
+            "value": 0.000468748
+        },
+        {
+            "source": "so2",
+            "target": "夏",
+            "value": 0.000103672
+        },
+        {
+            "source": "so2",
+            "target": "秋",
+            "value": 0.000739443
+        },
+        {
+            "source": "so2",
+            "target": "冬",
+            "value": 0.002521242
+        },
+        {
+            "source": "no2",
+            "target": "春",
+            "value": 0.001426293
+        },
+        {
+            "source": "no2",
+            "target": "夏",
+            "value": 0.002055488
+        },
+        {
+            "source": "no2",
+            "target": "秋",
+            "value": 0.003409809
+        },
+        {
+            "source": "no2",
+            "target": "冬",
+            "value": 0.003035472
+        },
+        {
+            "source": "co",
+            "target": "春",
+            "value": 0.030772995
+        },
+        {
+            "source": "co",
+            "target": "夏",
+            "value": 0.005140211
+        },
+        {
+            "source": "co",
+            "target": "秋",
+            "value": 0.039114511
+        },
+        {
+            "source": "co",
+            "target": "冬",
+            "value": 0.074791412
+        }
+    ]
+}
