@@ -20,3 +20,6 @@ tree tree_image tree_paths 可视化随机森林
 
 ## sangsheng
 桑基图，分解节点
+
+## llm
+网络上爬取合适语料，以地区污染情况为输入，通过对llm进行lora微调，希望llm得到合适的全国空气质量总结。
