@@ -2,7 +2,7 @@
 
 ## 项目介绍参考项目汇报文件夹 
 项目内容介绍 \
-https://github.com/innsn/Air_pollution_visual_analysis_system/main/项目汇报/introduction.pdf 
-## 项目学习了 https://github.com/HE-DE/project_code 
+https://github.com/innsn/Air_pollution_visual_analysis_system/blob/main/项目汇报/introduction.pdf
+## 项目部分学习了 https://github.com/HE-DE/project_code 
 项目实现详细介绍 \
 https://github.com/HE-DE/project_code/blob/main/可视化/project/README.md 
